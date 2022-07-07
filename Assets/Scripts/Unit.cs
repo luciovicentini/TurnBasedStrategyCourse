@@ -7,7 +7,7 @@ public class Unit : MonoBehaviour {
     private Vector3 targetPosition;
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.T)) {
+        if (Input.GetMouseButtonDown(0)) {
             Move(MouseWorld.GetPosition());
         }
         
