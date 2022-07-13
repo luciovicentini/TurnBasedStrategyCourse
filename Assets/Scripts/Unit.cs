@@ -7,11 +7,11 @@ public class Unit : MonoBehaviour {
     [SerializeField] private Animator unitAnimator;
     private Vector3 targetPosition;
 
-    private void Update() {
-        if (Input.GetMouseButtonDown(0)) {
-            targetPosition = MouseWorld.GetPosition();
-        }
+    private void Awake() {
+        targetPosition = transform.position;
+    }
 
+    private void Update() {
         float stoppingDistance = .1f;
         if (Vector3.Distance(transform.position, targetPosition) < stoppingDistance) {
             unitAnimator.SetBool("isWalking", false);
@@ -35,9 +35,8 @@ public class Unit : MonoBehaviour {
 
     private void Rotate(Vector3 direction) {
         float rotateSpeed = 3f;
-        Debug.Log($"t = {Time.deltaTime * rotateSpeed}");
-        Debug.Log($"transform.forward = {transform.forward}");
         transform.forward = Vector3.Lerp(transform.forward, direction, (Time.deltaTime * rotateSpeed));
     }
 
+    public void SetMoveTarget(Vector3 target) => targetPosition = target;
 }
