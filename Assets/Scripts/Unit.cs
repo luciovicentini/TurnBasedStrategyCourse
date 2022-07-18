@@ -6,9 +6,16 @@ using UnityEngine;
 public class Unit : MonoBehaviour {
     [SerializeField] private Animator unitAnimator;
     private Vector3 targetPosition;
+    
+    private GridPosition _gridPosition;
 
     private void Awake() {
         targetPosition = transform.position;
+    }
+
+    private void Start() {
+        _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
     }
 
     private void Update() {
@@ -18,6 +25,12 @@ public class Unit : MonoBehaviour {
         }
         else {
             MoveAndRotate();
+        }
+
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        if (newGridPosition != _gridPosition) {
+            LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, newGridPosition);
+            _gridPosition = newGridPosition;
         }
     }
 
