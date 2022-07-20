@@ -43,7 +43,7 @@ public class MoveAction : MonoBehaviour {
     
     public void MoveTo(GridPosition target) => _targetPosition = LevelGrid.Instance.GetWorldPosition(target);
     
-    private List<GridPosition> GetValidActionGridPositionList() {
+    public List<GridPosition> GetValidActionGridPositionList() {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
 
         GridPosition unitGridPosition = _unit.GetGridPosition();
