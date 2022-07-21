@@ -76,5 +76,5 @@ public class MoveAction : BaseAction {
     public bool IsValidActionGridPosition(GridPosition gridPosition) =>
         GetValidActionGridPositionList().Contains(gridPosition);
 
-
+    public override string GetActionName() => "Move";
 }
