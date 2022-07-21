@@ -11,6 +11,8 @@ public class UnitActionSystem : MonoBehaviour {
     [SerializeField] private Unit selectedUnit;
     [SerializeField] private LayerMask unitLayerMask;
 
+    private bool _isBusy;
+    
     private void Awake() {
         if (Instance != null) {
             Debug.LogError("There is more than one UnitActionSystem Instance! " + transform + " - " + Instance);
@@ -21,20 +23,23 @@ public class UnitActionSystem : MonoBehaviour {
         Instance = this;
     }
 
-    void Update()
-    {
+    void Update() {
+        if (_isBusy) return;
+        
         if (Input.GetMouseButtonDown(0)) {
             if (TryHandleUnitSelection()) return;
 
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
 
             if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition)) {
-                selectedUnit.GetMoveAction().MoveTo(mouseGridPosition);
+                SetBusy();
+                selectedUnit.GetMoveAction().MoveTo(mouseGridPosition, ClearBusy);
             }
         }
 
         if (Input.GetMouseButtonDown(1)) {
-            selectedUnit.GetSpinAction().Spin();
+            SetBusy();
+            selectedUnit.GetSpinAction().Spin(ClearBusy);
         }
     }
 
@@ -53,6 +58,9 @@ public class UnitActionSystem : MonoBehaviour {
         selectedUnit = unit;
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    private void SetBusy() => _isBusy = true;
+    private void ClearBusy() => _isBusy = false;
 
     public Unit GetSelectedUnit() => selectedUnit;
 }

@@ -21,6 +21,7 @@ public class MoveAction : BaseAction {
         if (Vector3.Distance(transform.position, _targetPosition) < stoppingDistance) {
             unitAnimator.SetBool("isWalking", false);
             IsActive = false;
+            OnActionComplete();
         }
         else {
             unitAnimator.SetBool("isWalking", true);
@@ -44,7 +45,8 @@ public class MoveAction : BaseAction {
         transform.forward = Vector3.Lerp(transform.forward, direction, (Time.deltaTime * rotateSpeed));
     }
     
-    public void MoveTo(GridPosition target) {
+    public void MoveTo(GridPosition target, Action onActionComplete) {
+        OnActionComplete = onActionComplete;
         IsActive = true;
         _targetPosition = LevelGrid.Instance.GetWorldPosition(target);
     }

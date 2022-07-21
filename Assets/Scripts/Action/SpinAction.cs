@@ -16,11 +16,13 @@ public class SpinAction : BaseAction {
         _totalSpinAmount += spinAddAmount;
         if (_totalSpinAmount > 360f) {
             IsActive = false;
+            OnActionComplete();
         }
     }
 
-    public void Spin() {
+    public void Spin(Action onActionComplete) {
         IsActive = true;
+        OnActionComplete = onActionComplete;
         _totalSpinAmount = 0f;
     }
 }
