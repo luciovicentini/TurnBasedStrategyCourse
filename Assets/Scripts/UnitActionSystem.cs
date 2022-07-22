@@ -12,7 +12,8 @@ public class UnitActionSystem : MonoBehaviour {
     [SerializeField] private LayerMask unitLayerMask;
 
     private bool _isBusy;
-    
+    private BaseAction _selectedAction;
+
     private void Awake() {
         if (Instance != null) {
             Debug.LogError("There is more than one UnitActionSystem Instance! " + transform + " - " + Instance);
@@ -23,24 +24,18 @@ public class UnitActionSystem : MonoBehaviour {
         Instance = this;
     }
 
+    private void Start() {
+        SetSelectedUnit(selectedUnit);
+    }
+
     void Update() {
         if (_isBusy) return;
         
         if (Input.GetMouseButtonDown(0)) {
             if (TryHandleUnitSelection()) return;
-
-            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
-
-            if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition)) {
-                SetBusy();
-                selectedUnit.GetMoveAction().MoveTo(mouseGridPosition, ClearBusy);
-            }
         }
 
-        if (Input.GetMouseButtonDown(1)) {
-            SetBusy();
-            selectedUnit.GetSpinAction().Spin(ClearBusy);
-        }
+        HandleSelectedAction();
     }
 
     private bool TryHandleUnitSelection() {
@@ -54,8 +49,29 @@ public class UnitActionSystem : MonoBehaviour {
         return false;
     }
 
+    private void HandleSelectedAction() {
+        if (Input.GetMouseButton(0)) {
+            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+
+            switch (_selectedAction) {
+                case MoveAction moveAction:
+                    if (moveAction.IsValidActionGridPosition(mouseGridPosition)) {
+                        SetBusy();
+                        moveAction.MoveTo(mouseGridPosition, ClearBusy);
+                    }
+                    break;
+                case SpinAction spinAction:
+                    SetBusy();
+                    spinAction.Spin(ClearBusy);
+                    break;
+            }
+        }
+    }
+
     private void SetSelectedUnit(Unit unit) {
         selectedUnit = unit;
+        SetSelectedAction(unit.GetMoveAction());
+        
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -63,4 +79,6 @@ public class UnitActionSystem : MonoBehaviour {
     private void ClearBusy() => _isBusy = false;
 
     public Unit GetSelectedUnit() => selectedUnit;
+
+    public void SetSelectedAction(BaseAction baseAction) => _selectedAction = baseAction;
 }
