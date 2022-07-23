@@ -20,11 +20,13 @@ public class SpinAction : BaseAction {
         }
     }
 
-    public void Spin(Action onActionComplete) {
+    public override void TakeAction(GridPosition _, Action onActionComplete) {
         IsActive = true;
         OnActionComplete = onActionComplete;
         _totalSpinAmount = 0f;
     }
-    
+
+    public override List<GridPosition> GetValidActionGridPositionList() => new() {Unit.GetGridPosition()};
+
     public override string GetActionName() => "Spin";
 }
