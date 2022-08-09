@@ -29,4 +29,6 @@ public class SpinAction : BaseAction {
     public override List<GridPosition> GetValidActionGridPositionList() => new() {Unit.GetGridPosition()};
 
     public override string GetActionName() => "Spin";
+
+    public override int GetActionPointsCost() => 2;
 }
