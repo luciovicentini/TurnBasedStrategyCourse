@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootAction : BaseAction {
+
+    public event EventHandler OnShooting;
+    
     private enum State {
         Aiming,
         Shooting,
@@ -57,6 +60,7 @@ public class ShootAction : BaseAction {
     }
 
     private void Shoot() {
+        OnShooting?.Invoke(this, EventArgs.Empty);
         _targetUnit.Damage();
     }
 

@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveAction : BaseAction {
-    [SerializeField] private Animator unitAnimator;
+
+    public event EventHandler OnStartMoving;
+    public event EventHandler OnStopMoving;
+    
     [SerializeField] private int maxMoveDistance = 4;
     
     private Vector3 _targetPosition;
@@ -19,11 +22,13 @@ public class MoveAction : BaseAction {
         
         float stoppingDistance = .1f;
         if (Vector3.Distance(transform.position, _targetPosition) < stoppingDistance) {
-            unitAnimator.SetBool("isWalking", false);
+            // unitAnimator.SetBool("isWalking", false);
+            OnStopMoving?.Invoke(this, EventArgs.Empty);
+            
             ActionComplete();
         }
         else {
-            unitAnimator.SetBool("isWalking", true);
+            // unitAnimator.SetBool("isWalking", true);
             MoveAndRotate();
         }
     }
@@ -47,6 +52,7 @@ public class MoveAction : BaseAction {
     public override void TakeAction(GridPosition target, Action onActionCompleted) {
         ActionStart(onActionCompleted);
         _targetPosition = LevelGrid.Instance.GetWorldPosition(target);
+        OnStartMoving?.Invoke(this, EventArgs.Empty);
     }
 
     public override List<GridPosition> GetValidActionGridPositionList() {
