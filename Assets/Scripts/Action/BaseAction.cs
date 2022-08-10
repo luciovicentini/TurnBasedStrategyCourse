@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class BaseAction : MonoBehaviour {
     protected Unit Unit;
     protected bool IsActive;
-    protected Action OnActionComplete;
+    protected Action OnActionCompleted;
 
     protected virtual void Awake() {
         Unit = GetComponent<Unit>();
@@ -22,4 +22,14 @@ public abstract class BaseAction : MonoBehaviour {
     public abstract List<GridPosition> GetValidActionGridPositionList();
 
     public virtual int GetActionPointsCost() => 1;
+
+    protected void ActionStart(Action onActionCompleted) {
+        IsActive = true;
+        OnActionCompleted = onActionCompleted;
+    }
+
+    protected void ActionComplete() {
+        IsActive = false;
+        OnActionCompleted();
+    }
 }

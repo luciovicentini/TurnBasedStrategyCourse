@@ -69,8 +69,13 @@ public class Unit : MonoBehaviour {
     public MoveAction GetMoveAction() => _moveAction;
     public SpinAction GetSpinAction() => _spinAction;
     public GridPosition GetGridPosition() => _gridPosition;
+    public Vector3 GetWorldPosition() => transform.position;
     public BaseAction[] GetBaseActions() => _baseActionArray;
     public int GetActionPoints() => _actionPoints;
 
     public bool IsEnemy() => isEnemy;
+
+    public void Damage() {
+        Debug.Log($"{transform} Damaged!");
+    }
 }

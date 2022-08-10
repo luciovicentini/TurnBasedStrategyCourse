@@ -20,8 +20,7 @@ public class MoveAction : BaseAction {
         float stoppingDistance = .1f;
         if (Vector3.Distance(transform.position, _targetPosition) < stoppingDistance) {
             unitAnimator.SetBool("isWalking", false);
-            IsActive = false;
-            OnActionComplete();
+            ActionComplete();
         }
         else {
             unitAnimator.SetBool("isWalking", true);
@@ -41,13 +40,12 @@ public class MoveAction : BaseAction {
     }
 
     private void Rotate(Vector3 direction) {
-        float rotateSpeed = 3f;
+        float rotateSpeed = 10f;
         transform.forward = Vector3.Lerp(transform.forward, direction, (Time.deltaTime * rotateSpeed));
     }
     
-    public override void TakeAction(GridPosition target, Action onActionComplete) {
-        OnActionComplete = onActionComplete;
-        IsActive = true;
+    public override void TakeAction(GridPosition target, Action onActionCompleted) {
+        ActionStart(onActionCompleted);
         _targetPosition = LevelGrid.Instance.GetWorldPosition(target);
     }
 
