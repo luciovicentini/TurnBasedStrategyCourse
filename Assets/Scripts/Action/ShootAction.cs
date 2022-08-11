@@ -66,7 +66,9 @@ public class ShootAction : BaseAction {
 
     private void Shoot() {
         OnShooting?.Invoke(this, new OnShootEventArgs{TargetUnit = _targetUnit, ShootingUnit = Unit});
-        _targetUnit.Damage();
+
+        const int shootingDamage = 40;
+        _targetUnit.Damage(shootingDamage);
     }
 
     private void RotateTowardsTargetUnit() {
