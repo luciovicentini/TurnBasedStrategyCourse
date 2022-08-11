@@ -8,6 +8,12 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4938582517911578562, guid: 49f324c93601846ae9806e8d0c357db5,
+        type: 3}
+      propertyPath: ragDollPrefab
+      value: 
+      objectReference: {fileID: 8419258131465158850, guid: 62e4f76e435d54e5ab2bd34a57b30d5a,
+        type: 3}
     - target: {fileID: 2768100694397640260, guid: 49f324c93601846ae9806e8d0c357db5,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
