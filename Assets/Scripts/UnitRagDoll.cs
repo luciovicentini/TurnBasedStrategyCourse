@@ -8,7 +8,7 @@ public class UnitRagDoll : MonoBehaviour {
     public void Setup(Transform originalRootBone) {
         MatchAllChildTransforms(originalRootBone, ragDollRootBone);
         
-        ApplyExplosionToRagDoll(ragDollRootBone, 200f, transform.position, 3f);
+        ApplyExplosionToRagDoll(ragDollRootBone, 300f, transform.position, 10f);
     }
 
     private void MatchAllChildTransforms(Transform original, Transform clone) {
