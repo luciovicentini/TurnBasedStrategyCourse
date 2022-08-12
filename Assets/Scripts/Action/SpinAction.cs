@@ -20,8 +20,8 @@ public class SpinAction : BaseAction {
     }
 
     public override void TakeAction(GridPosition _, Action onActionCompleted) {
-        ActionStart(onActionCompleted);
         _totalSpinAmount = 0f;
+        ActionStart(onActionCompleted);
     }
 
     public override List<GridPosition> GetValidActionGridPositionList() => new() {Unit.GetGridPosition()};

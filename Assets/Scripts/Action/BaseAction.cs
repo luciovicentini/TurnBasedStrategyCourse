@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseAction : MonoBehaviour {
+
+    public static event EventHandler OnAnyActionStarted;
+    public static event EventHandler OnAnyActionCompleted;
+    
     protected Unit Unit;
     protected bool IsActive;
     protected Action OnActionCompleted;
@@ -26,10 +30,16 @@ public abstract class BaseAction : MonoBehaviour {
     protected void ActionStart(Action onActionCompleted) {
         IsActive = true;
         OnActionCompleted = onActionCompleted;
+        
+        OnAnyActionStarted?.Invoke(this, EventArgs.Empty);
     }
 
     protected void ActionComplete() {
         IsActive = false;
         OnActionCompleted();
+        
+        OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
     }
+
+    public Unit GetUnit() => Unit;
 }
