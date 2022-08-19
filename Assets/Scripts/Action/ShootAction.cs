@@ -17,7 +17,7 @@ public class ShootAction : BaseAction {
         Shooting,
         CoolOff,
     }
-    private int _maxShootDistance = 7;
+    private int _maxShootDistance = 3;
     private State _state;
     private float _stateTimer;
     private bool _canShootBullet;
@@ -118,4 +118,6 @@ public class ShootAction : BaseAction {
     }
 
     public Unit GetTargetUnit() => _targetUnit;
+
+    public int GetMaxShootingRange() => _maxShootDistance;
 }
