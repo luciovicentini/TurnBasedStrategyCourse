@@ -26,6 +26,12 @@ public class SpinAction : BaseAction {
 
     public override List<GridPosition> GetValidActionGridPositionList() => new() {Unit.GetGridPosition()};
 
+    protected override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition) =>
+        new EnemyAIAction {
+            GridPosition = gridPosition,
+            ActionValue = 0,
+        };
+
     public override string GetActionName() => "Spin";
 
     public override int GetActionPointsCost() => 2;
