@@ -1,28 +1,28 @@
+using System;
 using System.Numerics;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-public class GridSystem {
+public class GridSystem<TGridObject> {
     private int width;
     private int height;
     private float cellSize;
-    private GridObject[,] _gridObjectArray;
+    private TGridObject[,] _gridObjectArray;
     
-    public GridSystem(int width, int height, float cellSize) {
+    public GridSystem(int width, int height, float cellSize, Func<GridSystem<TGridObject>, GridPosition, TGridObject> create) {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
         
-        
-        CreateGridObject();
+        CreateGridObject(create);
     }
 
-    private void CreateGridObject() {
-        _gridObjectArray = new GridObject[width, height];
+    private void CreateGridObject(Func<GridSystem<TGridObject>, GridPosition, TGridObject> create) {
+        _gridObjectArray = new TGridObject[width, height];
         for (int x = 0; x < width; x++) {
             for (int z = 0; z < height; z++) {
-                _gridObjectArray[x, z] = new GridObject(this, new GridPosition(x, z));
+                _gridObjectArray[x, z] = create(this, new GridPosition(x, z));
             }
         }
     }
@@ -38,12 +38,12 @@ public class GridSystem {
             for (int z = 0; z < height; z++) {
                 GridPosition gridPosition = new GridPosition(x, z);
                 Transform debugObject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
-                debugObject.GetComponent<GridDebugObject>().SetGridObject(GetGridObject(gridPosition));
+                debugObject.GetComponent<GridDebugObject>().SetGridObject(GetGridObject(gridPosition) as GridObject);
             }
         }
     }
 
-    public GridObject GetGridObject(GridPosition gridPosition) => _gridObjectArray[gridPosition.x, gridPosition.z];
+    public TGridObject GetGridObject(GridPosition gridPosition) => _gridObjectArray[gridPosition.x, gridPosition.z];
 
     public bool IsValidGridPosition(GridPosition gridPosition) => gridPosition.x >= 0 &&
                                                                   gridPosition.x < width &&
