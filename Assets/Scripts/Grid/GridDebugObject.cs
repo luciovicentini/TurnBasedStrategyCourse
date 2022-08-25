@@ -6,17 +6,14 @@ using UnityEngine;
 
 public class GridDebugObject : MonoBehaviour
 {
-    private GridObject _gridObject;
-    private TextMeshPro _debugText;
-    private void Awake() {
-        _debugText = GetComponentInChildren<TextMeshPro>();
+    private object _gridObject;
+    [SerializeField] private TextMeshPro debugText;
+
+    public virtual void SetGridObject(object gridObject) {
+        _gridObject = gridObject;
     }
 
-    public void SetGridObject(GridObject gridObject) {
-        this._gridObject = gridObject;
-    }
-
-    private void Update() {
-        _debugText.SetText(_gridObject.ToString());
+    protected virtual void Update() {
+        debugText.SetText(_gridObject.ToString());
     }
 }
