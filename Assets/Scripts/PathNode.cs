@@ -9,6 +9,7 @@ public class PathNode {
     private int hCost;
     private int fCost;
     private PathNode cameFromPathNode;
+    private bool isWalkable = true;
     
     public PathNode(GridPosition gridPosition) {
         this.gridPosition = gridPosition;
@@ -25,5 +26,7 @@ public class PathNode {
     public void SetCameFromPathNode(PathNode pathNode) => cameFromPathNode = pathNode;
     public PathNode GetCameFromPathNode() => cameFromPathNode;
     public GridPosition GetGridPosition() => gridPosition;
+    public bool IsWalkable() => isWalkable;
+    public void SetIsWalkable(bool isWalkable) => this.isWalkable = isWalkable;
     public override string ToString() => gridPosition.ToString();
 }
