@@ -87,6 +87,22 @@ public class GridSystemVisual : MonoBehaviour {
         
         ShowGridPositionList(gridPositions, gridVisualType);
     }
+    
+    private void ShowGridPositionRangeRect(GridPosition centerGridPosition, int range, GridVisualType gridVisualType) {
+        List<GridPosition> gridPositions = new List<GridPosition>();
+        for (int x = -range; x <= range; x++) {
+            for (int z = -range; z <= range; z++) {
+                GridPosition offsetGridPosition = new GridPosition(x, z);
+                GridPosition testGridPosition = centerGridPosition + offsetGridPosition;
+
+                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition)) continue;
+
+                gridPositions.Add(testGridPosition);
+            }
+        }
+        
+        ShowGridPositionList(gridPositions, gridVisualType);
+    }
 
     private void UpdateGridVisual() {
         HideAll();
@@ -95,18 +111,28 @@ public class GridSystemVisual : MonoBehaviour {
 
         GridVisualType gridVisualType;
         switch (baseAction) {
-            default:
             case MoveAction:
+            default:
                 gridVisualType = GridVisualType.White;
                 break;
             case SpinAction:
                 gridVisualType = GridVisualType.Blue;
                 break;
-            case ShootAction:
+            case GrenadeAction:
+                gridVisualType = GridVisualType.Yellow;
+                break;
+            case ShootAction shootAction:
                 gridVisualType = GridVisualType.Red;
 
                 ShowGridPositionRange(UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition(), 
-                    ((ShootAction)baseAction).GetMaxShootingRange(),
+                    shootAction.GetMaxShootingRange(),
+                    GridVisualType.SoftRed);
+                break;
+            case SwordAction swordAction:
+                gridVisualType = GridVisualType.Red;
+
+                ShowGridPositionRangeRect(UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition(), 
+                    swordAction.GetSwordDistance(),
                     GridVisualType.SoftRed);
                 break;
         }
