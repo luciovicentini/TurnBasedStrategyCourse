@@ -135,6 +135,9 @@ public class GridSystemVisual : MonoBehaviour {
                     swordAction.GetSwordDistance(),
                     GridVisualType.SoftRed);
                 break;
+            case InteractAction:
+                gridVisualType = GridVisualType.Blue;
+                break;
         }
         
         ShowGridPositionList(baseAction.GetValidActionGridPositionList(), gridVisualType);

@@ -5,8 +5,8 @@ using UnityEngine;
 public class GridObject {
     public GridSystem<GridObject> GridSystem { get; private set; }
     public GridPosition GridPosition { get; private set; }
-
-    private readonly List<Unit> _unitList; 
+    private readonly List<Unit> _unitList;
+    private Door _door;
 
     public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition) {
         GridSystem = gridSystem;
@@ -37,4 +37,8 @@ public class GridObject {
     public bool HasAnyUnit() => _unitList.Count > 0;
 
     public Unit GetUnit() => HasAnyUnit() ? _unitList[0] : null;
+
+    public Door GetDoor() => _door;
+
+    public void SetDoor(Door door) => _door = door;
 }
