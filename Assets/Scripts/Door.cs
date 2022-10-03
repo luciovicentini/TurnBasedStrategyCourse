@@ -20,12 +20,10 @@ public class Door : MonoBehaviour {
         LevelGrid levelGrid = LevelGrid.Instance;
         _gridPosition = levelGrid.GetGridPosition(transform.position);
         levelGrid.SetDoorAtGridPosition(_gridPosition, this);
+        Pathfinding.Instance.SetIsWalkable(_gridPosition, isOpen);
 
         if (isOpen) {
             OpenDoor();
-        }
-        else {
-            CloseDoor();
         }
     }
 
