@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour {
+public class Door : MonoBehaviour, IInteractable {
     [SerializeField] private bool isOpen;
 
     private GridPosition _gridPosition;
     private Animator _animator;
     private bool _isActive;
     private float _timer;
-    private Action _onInteractComplete;
+    private Action _onInteractableComplete;
 
     private void Awake() {
         _animator = GetComponent<Animator>();
@@ -19,7 +19,7 @@ public class Door : MonoBehaviour {
     private void Start() {
         LevelGrid levelGrid = LevelGrid.Instance;
         _gridPosition = levelGrid.GetGridPosition(transform.position);
-        levelGrid.SetDoorAtGridPosition(_gridPosition, this);
+        levelGrid.SetInteractableAtGridPosition(_gridPosition, this);
         Pathfinding.Instance.SetIsWalkable(_gridPosition, isOpen);
 
         if (isOpen) {
@@ -33,7 +33,7 @@ public class Door : MonoBehaviour {
 
         if (_timer <= 0f) {
             _isActive = false;
-            _onInteractComplete();
+            _onInteractableComplete();
         }
     }
 
@@ -49,12 +49,11 @@ public class Door : MonoBehaviour {
         Pathfinding.Instance.SetIsWalkable(_gridPosition, isOpen);
     }
 
-    public void Interact(Action onInteractComplete) {
-
-        _onInteractComplete = onInteractComplete;
+    public void Interact(Action onInteractableComplete) {
+        _onInteractableComplete = onInteractableComplete;
         _isActive = true;
         _timer = .5f;
-        
+
         if (!isOpen) {
             OpenDoor();
         }
